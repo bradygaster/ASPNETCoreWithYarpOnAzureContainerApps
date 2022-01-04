@@ -1,4 +1,4 @@
-# .NET on Azure Container Apps
+# .NET with YARP on Azure Container Apps
 
 This repository contains a simple scenario built to demonstrate how ASP.NET Core 6.0 can be used to build a cloud-native application hosted in Azure Container Apps. The repository consists of the following projects and folders:
 
