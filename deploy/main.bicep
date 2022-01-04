@@ -77,8 +77,8 @@ module ui 'container-app.bicep' = {
     registryPassword: registryPassword
     registryUsername: registryUsername
     repositoryImage: ui_image
-    allowExternalIngress: true
-    allowInternalIngress: false
+    allowExternalIngress: false
+    allowInternalIngress: true
     envVars : [
       {
         name: 'ASPNETCORE_ENVIRONMENT'
