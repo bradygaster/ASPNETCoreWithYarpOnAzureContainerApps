@@ -3,6 +3,7 @@ param location string = resourceGroup().location
 param catalog_api_image string
 param orders_api_image string
 param ui_image string
+param yarp_image string
 param registry string
 param registryUsername string
 
@@ -96,3 +97,27 @@ module ui 'container-app.bicep' = {
 }
 
 var ui_fqdn = 'http://${ui.outputs.fqdn}'
+
+module yarp 'container-app.bicep' = {
+  name: 'yarp'
+  params: {
+    name: 'yarp'
+    containerAppEnvironmentId: env.outputs.id
+    registry: registry
+    registryPassword: registryPassword
+    registryUsername: registryUsername
+    repositoryImage: yarp_image
+    allowExternalIngress: true
+    allowInternalIngress: false
+    envVars : [
+      {
+        name: 'ASPNETCORE_ENVIRONMENT'
+        value: 'Development'
+      }
+      {
+        name: 'WEB_UI'
+        value: ui_fqdn
+      }
+    ]
+  }
+}

@@ -28,4 +28,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     hostname: ui
+
+  yarp:
+    image: "${acrLoginServer}/yarp:latest"
+    build:
+      context: .
+      dockerfile: DotNetOnContainerApps.Proxy/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    hostname: yarp
           
