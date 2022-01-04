@@ -1,0 +1,18 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1>External API Checks</h1>
+
+<table class="table">
+    <tr>
+        <th>Catalog API:</th>
+        <td>@Model.CatalogApiStatus</td>
+    </tr>
+    <tr>
+        <th>Orders API:</th>
+        <td>@Model.OrderApiStatus</td>
+    </tr>
+</table>
