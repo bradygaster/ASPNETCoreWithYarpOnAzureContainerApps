@@ -10,29 +10,10 @@ param registryUsername string
 @secure()
 param registryPassword string
 
-module logs 'logs.bicep' = {
-  name: 'logAnalyticWorkspace'
-  params: {
-    location: location
-  }
-}
-
-var workspace_resource_id = logs.outputs.workspace_resource_id
-
-module ai 'application_insights.bicep' = {
-  name: 'applicationInsights'
-  params: {
-    location: location
-    workspace_id: workspace_resource_id
-  }
-}
-
 module env 'environment.bicep' = {
   name: 'containerAppEnvironment'
   params: {
     location: location
-    logsClientId: logs.outputs.clientId
-    logsClientSecret: logs.outputs.clientSecret
   }
 }
 
@@ -50,7 +31,7 @@ module catalog_api 'container-app.bicep' = {
   }
 }
 
-var catalog_api_fqdn = 'http://${catalog_api.outputs.fqdn}'
+var catalog_api_fqdn = 'https://${catalog_api.outputs.fqdn}'
 
 module orders_api 'container-app.bicep' = {
   name: 'orders-api'
@@ -66,7 +47,7 @@ module orders_api 'container-app.bicep' = {
   }
 }
 
-var orders_api_fqdn = 'http://${orders_api.outputs.fqdn}'
+var orders_api_fqdn = 'https://${orders_api.outputs.fqdn}'
 
 module ui 'container-app.bicep' = {
   name: 'ui'
@@ -96,7 +77,7 @@ module ui 'container-app.bicep' = {
   }
 }
 
-var ui_fqdn = 'http://${ui.outputs.fqdn}'
+var ui_fqdn = 'https://${ui.outputs.fqdn}'
 
 module yarp 'container-app.bicep' = {
   name: 'yarp'

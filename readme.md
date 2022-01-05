@@ -32,5 +32,3 @@ The resultant application is an Azure Container Environment-hosted set of contai
 
 Internet traffic should not be able to directly access either of the back-end APIs, or the Blazor Server interface, as each of these containers is marked as "internal ingress only" during the deployment phase. Internet traffic hitting the `yarp.<your app>.<your region>.azurecontainerapps.io` URL should be proxied to the `ui` container, which in turn makes outbound calls to both the `catalog` and `orders` APIs within the Azure Container Apps Environment. The `yarp` Azure Container App should be the only app in the environment marked with "external ingress," as it should proxy to the UI and thus, shield the back-end from internet traffic.
 
-> Note: at this time there is a known issue associated with this scenario, and this repository is being used as a sample demonstrating the issue. If you clone the repository and run it as-is, things won't work as expected. An update to this readme will be made once an issue has been created we'll use to fix the issue.
-
