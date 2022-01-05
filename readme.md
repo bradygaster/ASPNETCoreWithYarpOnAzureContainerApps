@@ -21,7 +21,8 @@ This repository contains a simple scenario built to demonstrate how ASP.NET Core
 
 1. Clone this repository.
 2. Sign in to your Azure subscription using the `az login` command.
-3. From the root of this repository, run `./setup.ps1`. 
+3. If you have more than 1 Azure subscription, make sure you're targeting the *right* Azure subscription by using the `az account show` and `az account set -s <subscription-id>` commands.
+4. From the root of this repository, run `./setup.ps1`. 
 
 ## Topology diagram
 
