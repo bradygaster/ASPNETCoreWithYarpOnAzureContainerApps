@@ -50,7 +50,7 @@ module catalog_api 'container-app.bicep' = {
   }
 }
 
-var catalog_api_fqdn = 'http://${catalog_api.outputs.fqdn}'
+var catalog_api_fqdn = 'https://${catalog_api.outputs.fqdn}'
 
 module orders_api 'container-app.bicep' = {
   name: 'orders-api'
@@ -66,7 +66,7 @@ module orders_api 'container-app.bicep' = {
   }
 }
 
-var orders_api_fqdn = 'http://${orders_api.outputs.fqdn}'
+var orders_api_fqdn = 'https://${orders_api.outputs.fqdn}'
 
 module ui 'container-app.bicep' = {
   name: 'ui'
@@ -96,7 +96,7 @@ module ui 'container-app.bicep' = {
   }
 }
 
-var ui_fqdn = 'http://${ui.outputs.fqdn}'
+var ui_fqdn = 'https://${ui.outputs.fqdn}'
 
 module yarp 'container-app.bicep' = {
   name: 'yarp'
