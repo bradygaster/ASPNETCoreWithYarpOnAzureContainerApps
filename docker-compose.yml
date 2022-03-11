@@ -1,9 +1,8 @@
-version: '3.4' 
+version: '3.4'
 
 services:
-
   catalog:
-    image: "${acrLoginServer}/catalog:latest"
+    image: ${DOCKER_REGISTRY-}dotnetoncontainerappsapiscatalog
     build:
       context: .
       dockerfile: DotNetOnContainerApps.APIs.Catalog/Dockerfile
@@ -12,7 +11,7 @@ services:
     hostname: catalog
 
   orders:
-    image: "${acrLoginServer}/orders:latest"
+    image: ${DOCKER_REGISTRY-}dotnetoncontainerappsapisorders
     build:
       context: .
       dockerfile: DotNetOnContainerApps.APIs.Orders/Dockerfile
@@ -21,7 +20,7 @@ services:
     hostname: orders
 
   ui:
-    image: "${acrLoginServer}/ui:latest"
+    image: ${DOCKER_REGISTRY-}dotnetoncontainerappsapisui
     build:
       context: .
       dockerfile: DotNetOnContainerApps.APIs.UI/Dockerfile
@@ -30,11 +29,10 @@ services:
     hostname: ui
 
   yarp:
-    image: "${acrLoginServer}/yarp:latest"
+    image: ${DOCKER_REGISTRY-}dotnetoncontainerappsproxy
     build:
       context: .
       dockerfile: DotNetOnContainerApps.Proxy/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     hostname: yarp
-          

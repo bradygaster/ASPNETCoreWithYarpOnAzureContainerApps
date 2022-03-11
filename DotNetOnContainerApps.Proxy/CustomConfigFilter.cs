@@ -5,13 +5,13 @@ namespace DotNetOnContainerApps.Proxy
 {
     public class CustomConfigFilter : IProxyConfigFilter
     {
-        IConfiguration _configuration;
-        ILogger<CustomConfigFilter> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<CustomConfigFilter> _logger;
 
         public CustomConfigFilter(IConfiguration configuration, ILogger<CustomConfigFilter> logger)
         {
-            _configuration = configuration;
-            _logger = logger;
+            this._configuration = configuration;
+            this._logger = logger;
         }
 
         // Matches {{env_var_name}} or {{my-name}} or {{123name}} etc.
@@ -20,37 +20,45 @@ namespace DotNetOnContainerApps.Proxy
         public ValueTask<ClusterConfig> ConfigureClusterAsync(ClusterConfig cluster, CancellationToken cancel)
         {
             // Each cluster has a dictionary of destinations, which is read-only, so we'll create a new one with our updates 
-            var newDests = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase);
+            var destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var d in cluster.Destinations)
+            if (cluster.Destinations != null)
             {
-                var origAddress = d.Value.Address;
-                if (_exp.IsMatch(origAddress))
+                foreach (var d in cluster.Destinations)
                 {
-                    // Get the name of the env variable from the destination and lookup value
-                    var lookup = _exp.Matches(origAddress)[0].Groups[1].Value;
-                    var newAddress = _configuration.GetValue<string>(lookup);
-
-                    if (string.IsNullOrWhiteSpace(newAddress))
+                    var origAddress = d.Value.Address;
+                    if (_exp.IsMatch(origAddress))
                     {
-                        throw new System.ArgumentException($"Configuration Filter Error: Substitution for '{lookup}' in cluster '{d.Key}' not found in configuration.");
-                    }
+                        // Get the name of the env variable from the destination and lookup value
+                        var lookup = _exp.Matches(origAddress)[0].Groups[1].Value;
+                        var newAddress = _configuration.GetValue<string>(lookup);
 
-                    var modifiedDest = d.Value with { Address = newAddress };
-                    newDests.Add(d.Key, modifiedDest);
-                }
-                else
-                {
-                    newDests.Add(d.Key, d.Value);
+                        if (string.IsNullOrWhiteSpace(newAddress))
+                        {
+                            throw new System.ArgumentException(
+                                $"Configuration Filter Error: Substitution for '{lookup}' in cluster '{d.Key}' not found in configuration.");
+                        }
+
+                        var modifiedDest = d.Value with {Address = newAddress};
+                        destinations.Add(d.Key, modifiedDest);
+                    }
+                    else
+                    {
+                        destinations.Add(d.Key, d.Value);
+                    }
                 }
             }
+            else
+            {
+                this._logger.LogInformation("cluster.Destinations is null");
+            }
 
-            return new ValueTask<ClusterConfig>(cluster with { Destinations = newDests });
+            return new ValueTask<ClusterConfig>(cluster with { Destinations = destinations });
         }
 
         public ValueTask<RouteConfig> ConfigureRouteAsync(RouteConfig route, ClusterConfig? cluster, CancellationToken cancel)
         {
-            if (route.Order.HasValue && route.Order.Value < 1)
+            if (route.Order is < 1)
             {
                 return new ValueTask<RouteConfig>(route with { Order = 1 });
             }
