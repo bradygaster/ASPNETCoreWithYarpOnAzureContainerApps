@@ -4,23 +4,16 @@ services:
   catalog:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5001"
 
   orders:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5002"
 
   ui:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5000"
 
   yarp:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "9090"
+    

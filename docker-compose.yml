@@ -36,3 +36,5 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     hostname: yarp
+    ports:
+      - "9090:80"
