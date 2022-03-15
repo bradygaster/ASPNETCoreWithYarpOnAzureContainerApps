@@ -24,6 +24,22 @@ This repository contains a simple scenario built to demonstrate how ASP.NET Core
 3. If you have more than 1 Azure subscription, make sure you're targeting the *right* Azure subscription by using the `az account show` and `az account set -s <subscription-id>` commands.
 4. From the root of this repository, run `./setup.ps1`. 
 
+## Local Development with Docker Compose
+
+You can use Docker Compose to run the solution locally, by selecting "docker compose" from the project list in the toolbar.
+
+## Local Development as .exe
+
+You can run the solution locally as plain .exe by right clicking on the solution in Solution Explore and selecting "Set Startup Projects" and selecting "Multiple Startup Projects", and setting each project to "Start" except for the docker compose project.
+
+You also need to add the following entries to your `hosts` file (located in `%Windows%\System32\drivers\etc`):
+
+```
+127.0.0.1 ui
+127.0.0.1 catalog
+127.0.0.1 orders
+```
+
 ## Topology diagram
 
 The resultant application is an Azure Container Environment-hosted set of containers - the `catalog` API, the `orders` API, the `ui` Blazor Server front-end, and the `yarp` reverse proxy app.
