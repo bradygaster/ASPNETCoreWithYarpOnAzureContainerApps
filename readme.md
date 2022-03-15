@@ -32,14 +32,6 @@ You can use Docker Compose to run the solution locally, by selecting "docker com
 
 You can run the solution locally as plain .exe by right clicking on the solution in Solution Explore and selecting "Set Startup Projects" and selecting "Multiple Startup Projects", and setting each project to "Start" except for the docker compose project.
 
-You also need to add the following entries to your `hosts` file (located in `%Windows%\System32\drivers\etc`):
-
-```
-127.0.0.1 ui
-127.0.0.1 catalog
-127.0.0.1 orders
-```
-
 ## Topology diagram
 
 The resultant application is an Azure Container Environment-hosted set of containers - the `catalog` API, the `orders` API, the `ui` Blazor Server front-end, and the `yarp` reverse proxy app.

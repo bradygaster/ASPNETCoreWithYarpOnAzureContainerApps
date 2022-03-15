@@ -9,7 +9,7 @@
       "applicationUrl": "http://localhost:9090",
       "dotnetRunMessages": true
     },
-    "Docker (1)": {
+    "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
