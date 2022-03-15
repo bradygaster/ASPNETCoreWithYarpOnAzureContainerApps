@@ -3,17 +3,17 @@ version: '3.4'
 services:
   catalog:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=ContainerDevelopment
 
   orders:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=ContainerDevelopment
 
   ui:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=ContainerDevelopment
 
   yarp:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    
+      - ASPNETCORE_ENVIRONMENT=ContainerDevelopment
+  
