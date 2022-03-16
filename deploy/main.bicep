@@ -7,11 +7,24 @@ param yarp_image string
 param registry string
 param registryUsername string
 
+param useExistingEnv bool = false
+param envName string = ''
+param envResourceGroup string = resourceGroup().name
+
 @secure()
 param registryPassword string
 
-module env 'environment.bicep' = {
+module existing_env 'existing-environment.bicep' = if (useExistingEnv) {
+  name: 'existingContainerAppEnvironment'
+  scope: resourceGroup(envResourceGroup)
+  params: {
+    envName: envName
+  }
+}
+
+module env 'environment.bicep' = if (!useExistingEnv) {
   name: 'containerAppEnvironment'
+  scope: resourceGroup(envResourceGroup)
   params: {
     location: location
   }
@@ -21,7 +34,7 @@ module catalog_api 'container-app.bicep' = {
   name: 'catalog-api'
   params: {
     name: 'catalog-api'
-    containerAppEnvironmentId: env.outputs.id
+    containerAppEnvironmentId: (useExistingEnv ? existing_env.outputs.id :  env.outputs.id)
     registry: registry
     registryPassword: registryPassword
     registryUsername: registryUsername
@@ -37,7 +50,7 @@ module orders_api 'container-app.bicep' = {
   name: 'orders-api'
   params: {
     name: 'orders-api'
-    containerAppEnvironmentId: env.outputs.id
+    containerAppEnvironmentId: (useExistingEnv ? existing_env.outputs.id :  env.outputs.id)
     registry: registry
     registryPassword: registryPassword
     registryUsername: registryUsername
@@ -53,7 +66,7 @@ module ui 'container-app.bicep' = {
   name: 'ui'
   params: {
     name: 'ui'
-    containerAppEnvironmentId: env.outputs.id
+    containerAppEnvironmentId: (useExistingEnv ? existing_env.outputs.id :  env.outputs.id)
     registry: registry
     registryPassword: registryPassword
     registryUsername: registryUsername
@@ -83,7 +96,7 @@ module yarp 'container-app.bicep' = {
   name: 'yarp'
   params: {
     name: 'yarp'
-    containerAppEnvironmentId: env.outputs.id
+    containerAppEnvironmentId: (useExistingEnv ? existing_env.outputs.id :  env.outputs.id)
     registry: registry
     registryPassword: registryPassword
     registryUsername: registryUsername

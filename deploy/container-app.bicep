@@ -11,6 +11,19 @@ param registryUsername string
 @secure()
 param registryPassword string
 
+// Handle whether to use an authenticated container registry
+var secrets = empty(registryUsername) ? [] : array({
+  name: 'container-registry-password'
+  value: registryPassword
+})
+
+var registries = empty(registryUsername) ? [] : array({
+  server: registry
+  username: registryUsername
+  passwordSecretRef: 'container-registry-password'
+})
+
+
 resource containerApp 'Microsoft.Web/containerApps@2021-03-01' = {
   name: name
   kind: 'containerapp'
@@ -18,19 +31,8 @@ resource containerApp 'Microsoft.Web/containerApps@2021-03-01' = {
   properties: {
     kubeEnvironmentId: containerAppEnvironmentId
     configuration: {
-      secrets: [
-        {
-          name: 'container-registry-password'
-          value: registryPassword
-        }
-      ]      
-      registries: [
-        {
-          server: registry
-          username: registryUsername
-          passwordSecretRef: 'container-registry-password'
-        }
-      ]
+      secrets: secrets
+      registries: registries
       ingress: {
         internal: allowInternalIngress
         external: allowExternalIngress

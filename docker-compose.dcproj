@@ -15,4 +15,6 @@
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>
+  <!-- workaround 'dotnet pack' trying to pack this project -->
+  <Target Name="Pack" />
 </Project>
