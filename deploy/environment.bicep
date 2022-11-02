@@ -25,12 +25,11 @@ resource appInsightsComponents 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource env 'Microsoft.Web/kubeEnvironments@2021-02-01' = {
+resource env 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
   name: '${baseName}env'
   location: location
   properties: {
-    type: 'managed'
-    internalLoadBalancerEnabled: false
+    internal: false
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
